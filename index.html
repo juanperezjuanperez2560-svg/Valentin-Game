@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentín Game</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #ffd6e8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', monospace;
+}
+
+.console {
+  background: #fff0f7;
+  border: 6px solid #ff69b4;
+  width: 340px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 25px #ff69b4;
+}
+
+h1 { color: #ff1493; }
+
+.btn {
+  display: block;
+  width: 90%;
+  margin: 10px auto;
+  padding: 10px;
+  background: #ff69b4;
+  color: white;
+  border: 3px solid #ff1493;
+  cursor: pointer;
+}
+
+.btn:hover { background: #ff85c1; }
+
+.hidden { display: none; }
+
+.blink {
+  animation: blink 1s infinite;
+  color: #ff69b4;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSICA -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_6fbb5e4e66.mp3">
+</audio>
+
+<!-- SONIDOS -->
+<audio id="failSound">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4f2c2e3d6c.mp3">
+</audio>
+
+<audio id="winSound">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a4e2c1.mp3">
+</audio>
+
+<!-- START -->
+<div class="console" id="start">
+  <h1>VALENTÍN GAME</h1>
+  <p class="blink">PRESS START</p>
+  <button class="btn" onclick="startGame()">START</button>
+</div>
+
+<!-- NIVEL 1 -->
+<div class="console hidden" id="level1">
+  <h1>NIVEL 1</h1>
+  <p>¿Sabes cuánto te amo? 💗</p>
+
+  <button class="btn" onclick="lose('COMO CREES MI AMOR 😭')">A) Meh 🫤</button>
+  <button class="btn" onclick="lose('Te amo mucho más que eso 💔')">B) Mucho 🫶🏼</button>
+  <button class="btn" onclick="next('Te amo mil infinitos mi vida ♾️💕','level2')">
+    C) Infinito ♾️ 💕
+  </button>
+</div>
+
+<!-- NIVEL 2 -->
+<div class="console hidden" id="level2">
+  <h1>NIVEL 2</h1>
+  <p>¿Dónde fue nuestro primer beso? 💋</p>
+
+  <button class="btn" onclick="next('Tú me das vida infinita ♾️💞','level3')">
+    A) En una fiesta 🎉
+  </button>
+  <button class="btn" onclick="lose('¿Cómo no te vas a acordar? 😞')">
+    B) En la escuela 🏫
+  </button>
+  <button class="btn" onclick="lose('¿Queee? Bueno, te perdono 🥺')">
+    C) En tu casa 🏠
+  </button>
+</div>
+
+<!-- NIVEL 3 -->
+<div class="console hidden" id="level3">
+  <h1>NIVEL 3</h1>
+  <p>¿Quieres ser mi San Valentín? 💘</p>
+
+  <button class="btn" onclick="win()">A) SHII AMOSHITOOO 💗</button>
+  <button class="btn" id="noBtn">B) ño 🤓</button>
+</div>
+
+<!-- ERROR -->
+<div class="console hidden" id="error">
+  <h1>💔 ERROR 💔</h1>
+  <p id="errorText"></p>
+  <button class="btn" onclick="restart()">RESTART</button>
+</div>
+
+<!-- WIN -->
+<div class="console hidden" id="win">
+  <h1>🏆 GANASTE 🏆</h1>
+  <p>Puntos perdidos: 0</p>
+  <p>Amor: infinito ♾️</p>
+  <p>Nos vemos el 14 mi amor 💕</p>
+  <p>La vida sin ti = GAME OVER 👾</p>
+</div>
+
+<script>
+const music = document.getElementById("music");
+const failSound = document.getElementById("failSound");
+const winSound = document.getElementById("winSound");
+
+function startGame() {
+  music.play();
+  go("level1");
+}
+
+function go(id) {
+  document.querySelectorAll(".console").forEach(div => div.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function next(msg, id) {
+  alert(msg);
+  go(id);
+}
+
+function lose(msg) {
+  failSound.currentTime = 0;
+  failSound.play();
+  document.getElementById("errorText").innerText = msg;
+  go("error");
+}
+
+function restart() {
+  go("level1");
+}
+
+function win() {
+  winSound.currentTime = 0;
+  winSound.play();
+  alert("SHII 💘 ¡Eres mi San Valentín!");
+  go("win");
+}
+
+// botón NO imposible
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 200 - 100;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+});
+</script>
+
+</body>
+</html>
