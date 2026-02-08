@@ -2,174 +2,180 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<title>Valentín-Game 💖</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentín Game</title>
 
 <style>
 body {
   margin: 0;
-  height: 100vh;
-  background: #ffd6e8;
+  font-family: 'Courier New', monospace;
+  background: linear-gradient(135deg, #ffd6e8, #ffeaf4);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Courier New', monospace;
-}
-
-.console {
-  background: #fff0f7;
-  border: 6px solid #ff69b4;
-  width: 340px;
-  padding: 20px;
+  height: 100vh;
   text-align: center;
-  box-shadow: 0 0 25px #ff69b4;
 }
 
-h1 { color: #ff1493; }
+.screen {
+  display: none;
+  animation: fadeIn 0.6s ease;
+}
 
-.btn {
+.screen.active {
   display: block;
-  width: 90%;
-  margin: 10px auto;
-  padding: 10px;
-  background: #ff69b4;
-  color: white;
-  border: 3px solid #ff1493;
-  cursor: pointer;
 }
 
-.btn:hover { background: #ff85c1; }
-.hidden { display: none; }
+h1 {
+  color: #ff4d88;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #444;
+  font-size: 18px;
+}
+
+button {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #ff8fb1;
+  color: white;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.08);
+}
 
 .blink {
   animation: blink 1s infinite;
-  color: #ff69b4;
 }
 
 @keyframes blink {
   50% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- AUDIO -->
+<!-- SONIDOS -->
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_6fbb5e4e66.mp3">
-</audio>
-
-<audio id="failSound">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4f2c2e3d6c.mp3">
+  <source src="https://assets.mixkit.co/music/preview/mixkit-arcade-retro-game-over-213.mp3">
 </audio>
 
 <audio id="winSound">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a4e2c1.mp3">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-win-2016.mp3">
 </audio>
 
-<!-- START -->
-<div class="console" id="start">
-  <h1>VALENTÍN GAME</h1>
-  <p class="blink">PRESS START</p>
-  <button class="btn" onclick="startGame()">START</button>
+<audio id="failSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-player-losing-or-failing-2042.mp3">
+</audio>
+
+<!-- INICIO -->
+<div class="screen active" id="start">
+  <h1>💖 Valentín Game 💖</h1>
+  <p class="blink">🎮 Press Start 🎮</p>
+  <button onclick="startGame()">START</button>
 </div>
 
 <!-- NIVEL 1 -->
-<div class="console hidden" id="level1">
-  <h1>NIVEL 1</h1>
-  <p>¿Sabes cuánto te amo? 💗</p>
-
-  <button class="btn" onclick="lose('COMO CREES MI AMOR 😭')">A) Meh 🫤</button>
-  <button class="btn" onclick="lose('Te amo mucho más que eso 💔')">B) Mucho 🫶🏼</button>
-  <button class="btn" onclick="next('level2')">C) Infinito ♾️ 💕</button>
-</div>
-
-<!-- NIVEL 2 -->
-<div class="console hidden" id="level2">
-  <h1>NIVEL 2</h1>
-  <p>¿Dónde fue nuestro primer beso? 💋</p>
-
-  <button class="btn" onclick="next('level3')">A) En una fiesta 🎉</button>
-  <button class="btn" onclick="lose('¿Cómo no te vas a acordar? 😞')">B) En la escuela 🏫</button>
-  <button class="btn" onclick="lose('¿Queee? Bueno, te perdono 🥺')">C) En tu casa 🏠</button>
-</div>
-
-<!-- NIVEL 3 -->
-<div class="console hidden" id="level3">
-  <h1>NIVEL 3</h1>
-  <p>¿Quieres ser mi San Valentín? 💘</p>
-
-  <button class="btn" onclick="win()">A) SHII AMOSHITOOO 💗</button>
-  <button class="btn" id="noBtn">B) ño 🤓</button>
+<div class="screen" id="level1">
+  <h1>Nivel 1 💗</h1>
+  <p>¿Sabes cuánto te amo?</p>
+  <button onclick="fail('COMO CREES MI AMOR 😭')">A) Meh 🫤</button>
+  <button onclick="fail('Te amo mucho más que eso 🥺')">B) Mucho 🫶🏼</button>
+  <button onclick="win(1)">C) Infinito ♾️ 💕</button>
 </div>
 
 <!-- FELICIDADES -->
-<div class="console hidden" id="success">
-  <h1>🎉 FELICIDADES 🎉</h1>
-  <p>Lo lograste mi amor 💖</p>
-  <button class="btn" onclick="go('win')">CONTINUAR</button>
+<div class="screen" id="win">
+  <h1>🎉 ¡Felicidades! 🎉</h1>
+  <p id="winText"></p>
+  <button onclick="nextLevel()">Continuar ➡️</button>
 </div>
 
-<!-- ERROR -->
-<div class="console hidden" id="error">
-  <h1>💔 ERROR 💔</h1>
-  <p id="errorText"></p>
-  <button class="btn" onclick="restart()">RESTART</button>
+<!-- NIVEL 2 -->
+<div class="screen" id="level2">
+  <h1>Nivel 2 💘</h1>
+  <p>¿Dónde fue nuestro primer beso?</p>
+  <button onclick="win(2)">A) En una fiesta 🎉</button>
+  <button onclick="fail('¿Cómo no te vas a acordar? 😞')">B) En la escuela 🏫</button>
+  <button onclick="fail('Queee? Bueno, te perdono 🥺')">C) En tu casa 🏠</button>
+</div>
+
+<!-- NIVEL 3 -->
+<div class="screen" id="level3">
+  <h1>Nivel Final 💞</h1>
+  <p>¿Quieres ser mi San Valentín?</p>
+  <button onclick="win(3)">A) SHII AMOSHITOOO 💗</button>
+  <button id="noBtn">B) ño 🤓</button>
 </div>
 
 <!-- FINAL -->
-<div class="console hidden" id="win">
+<div class="screen" id="final">
   <h1>🏆 GANASTE 🏆</h1>
-  <p>Puntos perdidos: 0</p>
-  <p>Amor: infinito ♾️</p>
-  <p>Nos vemos el 14 mi amor 💕</p>
-  <p>La vida sin ti = GAME OVER 👾</p>
+  <p>
+    Puntos perdidos: 0 💯<br>
+    Amor: infinito ♾️<br><br>
+    Nos vemos el 14 mi amor 💕<br>
+    La vida sin ti = game over 👾
+  </p>
 </div>
 
 <script>
-let currentLevel = "level1";
+let currentLevel = 1;
 
 const music = document.getElementById("music");
-const failSound = document.getElementById("failSound");
 const winSound = document.getElementById("winSound");
+const failSound = document.getElementById("failSound");
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
 function startGame() {
   music.play();
-  go("level1");
+  show('level1');
 }
 
-function go(id) {
-  document.querySelectorAll(".console").forEach(div => div.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-  if (id.startsWith("level")) currentLevel = id;
-}
-
-function next(id) {
-  go(id);
-}
-
-function lose(msg) {
-  failSound.currentTime = 0;
-  failSound.play();
-  document.getElementById("errorText").innerText = msg;
-  go("error");
-}
-
-function restart() {
-  go(currentLevel);
-}
-
-function win() {
+function win(level) {
   winSound.play();
-  go("success");
+  currentLevel = level;
+  document.getElementById('winText').innerText =
+    level === 1 ? 'Te amo mil infinitos mi vida 💕' :
+    level === 2 ? 'Tu me das vida infinita ♾️💞' :
+    '¡Eres mi San Valentín! 💘';
+  show('win');
 }
 
-// botón NO imposible
+function nextLevel() {
+  if (currentLevel === 1) show('level2');
+  else if (currentLevel === 2) show('level3');
+  else show('final');
+}
+
+function fail(msg) {
+  failSound.play();
+  alert(msg);
+}
+
 const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 200 - 100;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  noBtn.style.position = "absolute";
+  noBtn.style.left = Math.random() * 80 + "%";
+  noBtn.style.top = Math.random() * 80 + "%";
 });
 </script>
 
