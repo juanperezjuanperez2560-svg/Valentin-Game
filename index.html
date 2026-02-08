@@ -39,7 +39,6 @@ h1 { color: #ff1493; }
 }
 
 .btn:hover { background: #ff85c1; }
-
 .hidden { display: none; }
 
 .blink {
@@ -55,12 +54,11 @@ h1 { color: #ff1493; }
 
 <body>
 
-<!-- MUSICA -->
+<!-- AUDIO -->
 <audio id="music" loop>
   <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_6fbb5e4e66.mp3">
 </audio>
 
-<!-- SONIDOS -->
 <audio id="failSound">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4f2c2e3d6c.mp3">
 </audio>
@@ -83,9 +81,7 @@ h1 { color: #ff1493; }
 
   <button class="btn" onclick="lose('COMO CREES MI AMOR 😭')">A) Meh 🫤</button>
   <button class="btn" onclick="lose('Te amo mucho más que eso 💔')">B) Mucho 🫶🏼</button>
-  <button class="btn" onclick="next('Te amo mil infinitos mi vida ♾️💕','level2')">
-    C) Infinito ♾️ 💕
-  </button>
+  <button class="btn" onclick="next('level2')">C) Infinito ♾️ 💕</button>
 </div>
 
 <!-- NIVEL 2 -->
@@ -93,15 +89,9 @@ h1 { color: #ff1493; }
   <h1>NIVEL 2</h1>
   <p>¿Dónde fue nuestro primer beso? 💋</p>
 
-  <button class="btn" onclick="next('Tú me das vida infinita ♾️💞','level3')">
-    A) En una fiesta 🎉
-  </button>
-  <button class="btn" onclick="lose('¿Cómo no te vas a acordar? 😞')">
-    B) En la escuela 🏫
-  </button>
-  <button class="btn" onclick="lose('¿Queee? Bueno, te perdono 🥺')">
-    C) En tu casa 🏠
-  </button>
+  <button class="btn" onclick="next('level3')">A) En una fiesta 🎉</button>
+  <button class="btn" onclick="lose('¿Cómo no te vas a acordar? 😞')">B) En la escuela 🏫</button>
+  <button class="btn" onclick="lose('¿Queee? Bueno, te perdono 🥺')">C) En tu casa 🏠</button>
 </div>
 
 <!-- NIVEL 3 -->
@@ -113,6 +103,13 @@ h1 { color: #ff1493; }
   <button class="btn" id="noBtn">B) ño 🤓</button>
 </div>
 
+<!-- FELICIDADES -->
+<div class="console hidden" id="success">
+  <h1>🎉 FELICIDADES 🎉</h1>
+  <p>Lo lograste mi amor 💖</p>
+  <button class="btn" onclick="go('win')">CONTINUAR</button>
+</div>
+
 <!-- ERROR -->
 <div class="console hidden" id="error">
   <h1>💔 ERROR 💔</h1>
@@ -120,7 +117,7 @@ h1 { color: #ff1493; }
   <button class="btn" onclick="restart()">RESTART</button>
 </div>
 
-<!-- WIN -->
+<!-- FINAL -->
 <div class="console hidden" id="win">
   <h1>🏆 GANASTE 🏆</h1>
   <p>Puntos perdidos: 0</p>
@@ -130,6 +127,8 @@ h1 { color: #ff1493; }
 </div>
 
 <script>
+let currentLevel = "level1";
+
 const music = document.getElementById("music");
 const failSound = document.getElementById("failSound");
 const winSound = document.getElementById("winSound");
@@ -142,10 +141,10 @@ function startGame() {
 function go(id) {
   document.querySelectorAll(".console").forEach(div => div.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
+  if (id.startsWith("level")) currentLevel = id;
 }
 
-function next(msg, id) {
-  alert(msg);
+function next(id) {
   go(id);
 }
 
@@ -157,14 +156,12 @@ function lose(msg) {
 }
 
 function restart() {
-  go("level1");
+  go(currentLevel);
 }
 
 function win() {
-  winSound.currentTime = 0;
   winSound.play();
-  alert("SHII 💘 ¡Eres mi San Valentín!");
-  go("win");
+  go("success");
 }
 
 // botón NO imposible
